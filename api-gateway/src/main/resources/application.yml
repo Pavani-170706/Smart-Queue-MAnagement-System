@@ -1,0 +1,76 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+
+      # CORS configuration
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:3000"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+      # API routes
+      routes:
+
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/doctors/**, /api/users/**, /api/admin/**
+
+        - id: appointment-service
+          uri: lb://appointment-service
+          predicates:
+            - Path=/api/appointments/**
+
+        - id: queue-service
+          uri: lb://queue-service
+          predicates:
+            - Path=/api/queue/**
+
+        - id: medical-service
+          uri: lb://medical-service
+          predicates:
+            - Path=/api/medical-records/**
+
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/notifications/**, /ws/**
+
+# Eureka configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+# JWT configuration
+jwt:
+  secret: mySuperSecretKeyForJWTTokenGeneration2024MustBeLongEnough!!
+
+# Logging
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG

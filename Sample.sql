@@ -1,0 +1,7 @@
+SHOW DATABASES;
+
+USE qms_user_db;
+
+SHOW TABLES;
+
+SELECT * FROM users;

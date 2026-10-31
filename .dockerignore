@@ -1,0 +1,12 @@
+**/target/
+**/node_modules/
+**/.git
+**/.gitignore
+**/documentation/
+**/README.md
+**/.env*
+**/*.md
+frontend/src/
+frontend/public/
+**/node_modules/
+**/src/test/

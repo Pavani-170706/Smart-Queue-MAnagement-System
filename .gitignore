@@ -1,0 +1,36 @@
+# Compiled class files
+target/
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+frontend/.env.local
+
+# Environment
+.env
+.env.local
+
+# Previous project files
+convex.json
+bun.lock
+integrations.md

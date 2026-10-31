@@ -1,0 +1,9 @@
+﻿{
+  "fullName": "Gateway Test",
+  "email": "gateway99998@example.com",
+  "phone": "9876543211",
+  "password": "Test12345",
+  "role": "CUSTOMER",
+  "gender": "",
+  "address": "Test Address"
+}
