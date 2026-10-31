@@ -1,235 +1,467 @@
-# Smart Hospital Queue Management System (MedQueue)
+# 🏥 MedQueue – Smart Hospital Queue Management System
 
-A complete B.Tech semester project — a microservices-based hospital queue management system built with Java Spring Boot, React.js, MySQL, and Docker.
+<p align="center">
 
-## Architecture
+**A Microservices-Based Hospital Appointment & Queue Management Platform**
 
+*Smarter Appointments. Faster Queues. Better Patient Experiences.*
+
+</p>
+
+---
+
+## 📌 Project Overview
+
+**MedQueue** is a B.Tech semester project designed to simplify hospital appointment scheduling and patient queue management.
+
+Built using a microservices architecture, the system connects patients, doctors, receptionists, and administrators through a centralized platform. It helps hospitals manage appointments, generate queue tokens, track waiting times, maintain medical records, and send real-time notifications.
+
+The platform focuses on improving hospital workflow, reducing manual queue management, and providing a smoother experience for patients and healthcare staff.
+
+## ✨ Key Highlights
+
+- 🔐 Secure authentication using JWT and Spring Security
+- 👥 Role-based access for four user types
+- 🩺 Doctor search and appointment booking
+- 🎫 Automatic daily queue token generation
+- ⏱️ Real-time queue status and waiting-time estimation
+- 📋 Digital medical records and medicine management
+- 🔔 WebSocket-based in-app notifications
+- 📅 Automatic appointment reminders and missed-appointment rescheduling
+- 📊 Admin dashboard with management operations
+- 🐳 Docker-based service deployment
+
+---
+
+## 🏗️ System Architecture
+
+MedQueue follows a **Microservices Architecture**, where each service handles a specific business responsibility and communicates with other services through APIs.
+
+```text
+                   ┌──────────────────────┐
+                   │    React Frontend    │
+                   │      Port 3000       │
+                   └──────────┬───────────┘
+                              │
+                   ┌──────────▼───────────┐
+                   │     API Gateway      │
+                   │      Port 8080       │
+                   └──────────┬───────────┘
+                              │
+          ┌───────────────────┼───────────────────┐
+          │                   │                   │
+    ┌─────▼─────┐      ┌──────▼──────┐     ┌──────▼──────┐
+    │   Auth    │      │    User     │     │ Appointment │
+    │  Service  │      │   Service   │     │   Service   │
+    └───────────┘      └─────────────┘     └─────────────┘
+          │                   │                   │
+    ┌─────▼─────┐      ┌──────▼──────┐     ┌──────▼──────┐
+    │   Queue   │      │   Medical   │     │Notification │
+    │  Service  │      │   Service   │     │   Service   │
+    └───────────┘      └─────────────┘     └─────────────┘
+                              │
+                    ┌─────────▼─────────┐
+                    │   Eureka Server   │
+                    │ Service Discovery │
+                    └───────────────────┘
 ```
-React Frontend → API Gateway → Microservices → MySQL Databases
-                                    ↓
-                              Eureka Server (Service Discovery)
-```
 
-## Microservices
+### Microservices Overview
 
-| Service | Port | Database | Description |
-|---------|------|----------|-------------|
-| Eureka Server | 8761 | — | Service discovery |
-| API Gateway | 8080 | — | Route + JWT auth filter |
-| Auth Service | 8081 | qms_auth_db | Registration, login, JWT |
-| User/Staff Service | 8082 | qms_user_db | Users, doctor profiles |
-| Appointment Service | 8083 | qms_appointment_db | Book, cancel, manage |
-| Queue Service | 8084 | qms_queue_db | Token gen, queue management |
-| Medical Record Service | 8085 | qms_medical_db | Records, medicines |
-| Notification Service | 8086 | qms_notification_db | In-app notifications |
-| React Frontend | 3000 | — | SPA with role-based routing |
+| Service | Port | Responsibility |
+|---|---:|---|
+| Eureka Server | 8761 | Service discovery |
+| API Gateway | 8080 | Request routing and JWT authentication filter |
+| Auth Service | 8081 | Registration, login and JWT |
+| User/Staff Service | 8082 | User and doctor profile management |
+| Appointment Service | 8083 | Appointment scheduling and management |
+| Queue Service | 8084 | Token generation and queue management |
+| Medical Record Service | 8085 | Medical records and medicines |
+| Notification Service | 8086 | In-app notifications |
+| React Frontend | 3000 | User interface |
 
-## Roles
+---
 
-- **Customer** — Book appointments, view tokens, access records
-- **Doctor** — View queue, start/complete consultations
-- **Receptionist** — Patient check-in, queue management
-- **Admin** — Staff/customer/doctor management, system overview
+## 👤 User Roles & Responsibilities
 
-## Tech Stack
+MedQueue supports four different roles, each with dedicated functionality.
 
-- **Backend**: Java 21, Spring Boot 3.2, Spring Cloud 2023.0, Eureka, Gateway, OpenFeign, Spring Security, JWT, WebSocket
-- **Frontend**: React 18, JavaScript, Bootstrap 5, React Router 6, Axios
-- **Database**: MySQL 8
-- **Build**: Maven, npm
-- **Containerization**: Docker, Docker Compose
-- **Testing**: JUnit, Postman
+| Role | Main Responsibilities |
+|---|---|
+| 🧑 Customer | Register, search doctors, book appointments, view tokens and medical records |
+| 🩺 Doctor | View patient queues and manage consultations |
+| 🧑‍💼 Receptionist | Check in patients and manage queues |
+| 👨‍💻 Admin | Manage customers, doctors, staff and system operations |
 
-## Quick Start (Docker)
+---
+
+## 🛠️ Technology Stack
+
+### Backend
+- Java 21
+- Spring Boot 3.2
+- Spring Cloud 2023.0
+- Spring Security
+- Spring Cloud Gateway
+- Netflix Eureka
+- OpenFeign
+- JWT Authentication
+- WebSocket
+
+### Frontend
+- React.js 18
+- JavaScript
+- Bootstrap 5
+- React Router 6
+- Axios
+
+### Database & Tools
+- MySQL 8
+- Maven
+- npm
+- Docker
+- Docker Compose
+- JUnit
+- Postman
+
+---
+
+## 🚀 Getting Started
+
+You can run the complete project using Docker or start each service individually for local development.
+
+### Option 1: Run Using Docker
+
+**Prerequisites:** Docker Desktop installed and running.
+
+Open the project root directory in the terminal and execute:
 
 ```powershell
-# Build and start everything using Docker
+# Build all services
 docker compose build --no-cache
+
+# Start all containers
 docker compose up -d
 
-# Check service status
+# Check running services
 docker compose ps
 ```
 
-**Access:**
-- Frontend: http://localhost:3000
-- API Gateway: http://localhost:8080
-- Eureka Dashboard: http://localhost:8761
+### Application Access
 
-## Quick Start (Local Development)
+| Application | URL |
+|---|---|
+| 🌐 Frontend | http://localhost:3000 |
+| 🔗 API Gateway | http://localhost:8080 |
+| 🔍 Eureka Dashboard | http://localhost:8761 |
 
-### Prerequisites
+### Option 2: Local Development
+
+**Prerequisites:**
 - Java 21
 - Maven 3.9+
 - Node.js 18+
 - MySQL 8
 
-### 1. Setup MySQL
+**Step 1 – Configure MySQL**
+
 ```bash
 mysql -u root -p < mysql/init/01-init-databases.sql
 ```
 
-### 2. Start Services (in order)
-```bash
-# Terminal 1: Eureka Server
-cd eureka-server && mvn spring-boot:run
+**Step 2 – Start Backend Services**
 
-# Terminal 2: API Gateway
-cd api-gateway && mvn spring-boot:run
+Start the following services in separate terminals, in the specified order:
 
-# Terminal 3: Auth Service
-cd auth-service && mvn spring-boot:run
+| Terminal | Service | Command |
+|---|---|---|
+| 1 | Eureka Server | `cd eureka-server && mvn spring-boot:run` |
+| 2 | API Gateway | `cd api-gateway && mvn spring-boot:run` |
+| 3 | Auth Service | `cd auth-service && mvn spring-boot:run` |
+| 4 | User Service | `cd user-service && mvn spring-boot:run` |
+| 5 | Appointment Service | `cd appointment-service && mvn spring-boot:run` |
+| 6 | Queue Service | `cd queue-service && mvn spring-boot:run` |
+| 7 | Medical Service | `cd medical-service && mvn spring-boot:run` |
+| 8 | Notification Service | `cd notification-service && mvn spring-boot:run` |
 
-# Terminal 4: User Service
-cd user-service && mvn spring-boot:run
+**Step 3 – Start React Frontend**
 
-# Terminal 5: Appointment Service
-cd appointment-service && mvn spring-boot:run
-
-# Terminal 6: Queue Service
-cd queue-service && mvn spring-boot:run
-
-# Terminal 7: Medical Record Service
-cd medical-service && mvn spring-boot:run
-
-# Terminal 8: Notification Service
-cd notification-service && mvn spring-boot:run
-```
-
-### 3. Start Frontend
 ```bash
 cd frontend
 npm install
 npm start
 ```
 
-### 4. Open
-- Frontend: http://localhost:3000
-- Eureka: http://localhost:8761
+**Step 4 – Open the Application**
 
-## Demo Accounts
+Visit http://localhost:3000 in your browser.
+
+---
+
+## 🔑 Demo Accounts
+
+The following sample accounts are provided for demonstration purposes.
 
 | Role | Email | Password |
-|------|-------|----------|
+|---|---|---|
 | Admin | admin@qms.com | password123 |
 | Doctor | doctor@qms.com | password123 |
 | Receptionist | receptionist@qms.com | password123 |
 | Customer | customer@qms.com | password123 |
 
-## Features
+*These are demonstration credentials for the semester project.*
 
-- **JWT Authentication** with Spring Security + BCrypt
-- **Role-based authorization** (Customer, Doctor, Receptionist, Admin)
-- **Doctor search** by name, specialization, department
-- **Appointment booking** with 2-day advance limit
-- **Token generation** with unique daily numbers (C-001, N-001)
-- **Queue management** with real-time status tracking
-- **Waiting time** = People Before You × Avg Consultation Time
-- **Medical records** with symptoms, diagnosis, medicines
-- **In-app notifications** via WebSocket
-- **Automatic appointment reminder** 10 minutes before the scheduled slot
-- **Automatic missed-appointment rescheduling** once, with a fresh queue token and reminder reset
-- **Automatic cancellation** after the rescheduled appointment is missed again
-- **Admin dashboard** with full CRUD operations
-- **Swagger/OpenAPI** at each service's `/swagger-ui.html`
+---
 
-## API Endpoints
+## ⚡ Core Features
 
-### Auth (via Gateway :8080)
-- `POST /api/auth/register` — Register
-- `POST /api/auth/login` — Login (returns JWT)
-- `GET /api/auth/me` — Current user
+### 1. Authentication & Authorization
+- User registration and login
+- JWT-based authentication
+- BCrypt password encryption
+- Role-based access control
 
-### Doctors
-- `GET /api/doctors` — List all active doctors
-- `GET /api/doctors/{userId}` — Doctor profile
-- `GET /api/doctors/specializations` — All specializations
-- `GET /api/doctors/departments` — All departments
+### 2. Doctor Management
+- Search doctors by name
+- Filter by specialization and department
+- View doctor profiles
+- Import doctor information using CSV files
 
-### Appointments
-- `POST /api/appointments` — Book appointment
-- `GET /api/appointments/my/{customerId}` — My appointments
-- `PUT /api/appointments/{id}/cancel` — Cancel
-- `GET /api/appointments/slots` — Available slots
-- `GET /api/appointments/doctor/{doctorId}` — Doctor's appointments
-- `GET /api/appointments/all` — All (admin)
+### 3. Appointment Management
+- Book hospital appointments
+- View scheduled appointments
+- Cancel appointments
+- Check available appointment slots
+- Two-day advance booking limit
 
-### Queue
-- `GET /api/queue/{doctorId}` — Queue for doctor
-- `POST /api/queue/check-in` — Check in patient
-- `POST /api/queue/{tokenId}/start` — Start consultation
-- `POST /api/queue/{tokenId}/complete` — Complete consultation
-- `GET /api/queue/status/{appointmentId}` — Token status
+### 4. Smart Queue Management
+- Generate unique daily queue tokens
+- Separate token prefixes (C-001, N-001)
+- Patient check-in
+- Start and complete consultations
+- Real-time queue status tracking
+
+### 5. Waiting-Time Estimation
+
+The estimated waiting time is calculated using:
+
+**Waiting Time = People Before You × Average Consultation Time**
+
+### 6. Medical Records
+- Create and view patient medical records
+- Store symptoms and diagnosis
+- Maintain medicine details
+- Access patient medical history
+
+### 7. Real-Time Notifications
+- WebSocket-based communication
+- In-app notification delivery
+- Mark individual notifications as read
+- Mark all notifications as read
+
+### 8. Automatic Appointment Reminder & Rescheduling
+
+The Appointment Service includes two backend schedulers:
+
+- Sends an appointment reminder 10 minutes before the scheduled time.
+- Checks for missed appointments every 30 seconds.
+- Automatically reschedules a missed appointment once.
+- Generates a fresh queue token for the rescheduled slot.
+- Resets the reminder flag for the new appointment.
+- Sends an in-app rescheduling notification.
+- Cancels the appointment if the rescheduled appointment is missed again.
+- Skips Sundays during automatic rescheduling.
+- Uses `Asia/Kolkata` for time calculations.
+
+No frontend timer is required for these automated operations.
+
+---
+
+## 🔌 API Documentation
+
+All endpoints listed below are accessed through the API Gateway on port `8080`.
+
+### Authentication
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/auth/register` | Register a user |
+| POST | `/api/auth/login` | Authenticate and receive JWT |
+| GET | `/api/auth/me` | Get current user |
+
+### Doctor Management
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/doctors` | List active doctors |
+| GET | `/api/doctors/{userId}` | Get doctor profile |
+| GET | `/api/doctors/specializations` | List specializations |
+| GET | `/api/doctors/departments` | List departments |
+
+### Appointment Management
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/appointments` | Book appointment |
+| GET | `/api/appointments/my/{customerId}` | View customer appointments |
+| PUT | `/api/appointments/{id}/cancel` | Cancel appointment |
+| GET | `/api/appointments/slots` | Get available slots |
+| GET | `/api/appointments/doctor/{doctorId}` | View doctor's appointments |
+| GET | `/api/appointments/all` | Get all appointments (Admin) |
+
+### Queue Management
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/queue/{doctorId}` | Get doctor's queue |
+| POST | `/api/queue/check-in` | Check in patient |
+| POST | `/api/queue/{tokenId}/start` | Start consultation |
+| POST | `/api/queue/{tokenId}/complete` | Complete consultation |
+| GET | `/api/queue/status/{appointmentId}` | Get token status |
 
 ### Medical Records
-- `POST /api/medical-records` — Create record
-- `GET /api/medical-records/patient/{patientId}` — Patient records
-- `GET /api/medical-records/doctor/{doctorId}` — Doctor records
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/medical-records` | Create medical record |
+| GET | `/api/medical-records/patient/{patientId}` | Get patient records |
+| GET | `/api/medical-records/doctor/{doctorId}` | Get doctor records |
 
 ### Notifications
-- `GET /api/notifications/{userId}` — User notifications
-- `PUT /api/notifications/{id}/read` — Mark as read
-- `PUT /api/notifications/{userId}/read-all` — Mark all read
 
-## Project Structure
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/notifications/{userId}` | Get user notifications |
+| PUT | `/api/notifications/{id}/read` | Mark notification as read |
+| PUT | `/api/notifications/{userId}/read-all` | Mark all notifications as read |
 
-The runnable React application is under `frontend/`. The repository root is the Maven multi-module backend/Docker Compose root; there is no separate root Vite application.
+**API Testing:** Postman  
+**Interactive API Documentation:** Swagger/OpenAPI at each service's `/swagger-ui.html`.
 
+---
 
-```
-smart-hospital-qms/
-├── pom.xml                    # Parent POM
-├── docker-compose.yml         # Docker orchestration
-├── mysql/init/                # DB initialization
-├── eureka-server/             # Service discovery
-├── api-gateway/               # Spring Cloud Gateway + JWT filter
-├── auth-service/              # JWT auth + registration
-├── user-service/              # Users + doctor profiles
-├── appointment-service/       # Appointment CRUD + OpenFeign
-├── queue-service/             # Token + queue management + WebSocket
-├── medical-service/           # Medical records
-├── notification-service/      # Notifications + WebSocket
-├── frontend/                  # React.js SPA
+## 📁 Project Structure
+
+The project uses a Maven multi-module backend structure with a separate React frontend.
+
+```text
+Smart-Queue-System/
+│
+├── pom.xml
+├── docker-compose.yml
+│
+├── mysql/
+│   └── init/
+│       ├── 01-init-databases.sql
+│       └── 02-seed-data.sql
+│
+├── eureka-server/
+├── api-gateway/
+├── auth-service/
+├── user-service/
+├── appointment-service/
+├── queue-service/
+├── medical-service/
+├── notification-service/
+│
+├── frontend/
+│   ├── public/
 │   ├── src/
-│   │   ├── components/        # Sidebar, Layout
-│   │   ├── context/           # Auth context
-│   │   ├── pages/             # All pages by role
-│   │   └── services/          # Axios API layer
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── pages/
+│   │   └── services/
 │   └── package.json
-└── documentation/             # Project docs
+│
+├── data/
+│   └── doctors_dataset_all_departments.csv
+│
+└── documentation/
+    ├── 01_Project_Overview.md
+    ├── 02_System_Architecture.md
+    ├── 03_Microservices.md
+    ├── 04_Database_Design.md
+    ├── 05_API_Documentation.md
+    ├── 06_User_Roles.md
+    ├── 07_Setup_Guide.md
+    └── 08_Testing.md
 ```
 
-## License
+---
 
-B.Tech Semester Project — Smart Hospital Queue Management System
+## 🧑‍⚕️ Doctor Dataset Import
 
+The project includes a sample doctor dataset containing **60 fictional records across 24 departments**.
 
-## Automatic reminder and rescheduling
+To import the dataset:
 
-The appointment service runs two backend schedulers. No frontend timer is required.
+1. Sign in using an administrator account.
+2. Navigate to **Doctor Management**.
+3. Select the CSV dataset.
+4. Click **Upload and Import**.
 
-- Reminder check: every 30 seconds.
-- Reminder: sent once when an appointment is within 10 minutes of its scheduled time and is still `BOOKED`.
-- Reminder delivery is persisted in `reminder_sent`, preventing duplicate reminders after service restarts.
-- If a booked patient does not check in after the configured grace period (`2 × average consultation time`), Appointment Service automatically moves the appointment to the next available working slot.
-- The queue token is moved to the new date/time and receives a new token number.
-- The reminder flag is reset for the new appointment occurrence.
-- The patient receives an in-app reschedule notification.
-- If the rescheduled appointment is missed again, the appointment is cancelled and the queue token is marked `NO_SHOW`.
-- Sunday is skipped during automatic rescheduling.
-- Time calculations use `Asia/Kolkata`.
+The import process matches existing user records by email and updates doctor profiles during repeated imports.
 
-### Verify automation logs in PowerShell
+**Note:** CSV import does not create authentication passwords for doctor login accounts.
+
+---
+
+## 🧪 Monitoring & Troubleshooting
+
+To inspect Appointment Service logs:
 
 ```powershell
 docker compose logs --tail=200 appointment-service
-docker compose logs appointment-service | Select-String "APPOINTMENT REMINDER|APPOINTMENT RESCHEDULE|APPOINTMENT CANCELLED"
-docker compose logs queue-service | Select-String "ERROR|Exception"
 ```
 
-Do not use `docker compose down -v` unless you intentionally want to delete the MySQL Docker volume and all stored project data.
+To filter reminder and rescheduling logs:
 
+```powershell
+docker compose logs appointment-service |
+Select-String "APPOINTMENT REMINDER|APPOINTMENT RESCHEDULE|APPOINTMENT CANCELLED"
+```
 
-## Importing the doctor dataset
+To check Queue Service errors:
 
-The sample dataset is available at `data/doctors_dataset_all_departments.csv`. Sign in as an administrator, open **Doctor Management**, select the CSV, and click **Upload and Import**. The import matches existing user records by email and updates doctor profiles on repeated imports. The 60 records across 24 departments are fictional demo data. CSV import does not create authentication passwords for doctor login accounts.
+```powershell
+docker compose logs queue-service |
+Select-String "ERROR|Exception"
+```
+
+**Important:** Avoid running `docker compose down -v` unless you intentionally want to delete the MySQL Docker volume and all stored project data.
+
+---
+
+## 🎯 Project Objective
+
+The main objective of MedQueue is to demonstrate how modern web technologies and microservices architecture can be used to develop a centralized hospital queue management platform.
+
+By integrating appointment scheduling, queue tracking, medical records, and automated notifications, the project aims to demonstrate a more organized and efficient approach to hospital workflow management.
+
+---
+
+## 📜 Project Information
+
+| Detail | Information |
+|---|---|
+| Project Name | MedQueue – Smart Hospital Queue Management System |
+| Project Type | B.Tech Semester Project |
+| Architecture | Microservices |
+| Backend | Java Spring Boot |
+| Frontend | React.js |
+| Database | MySQL |
+| Deployment | Docker & Docker Compose |
+
+## 📄 License
+
+This project is developed for academic and educational purposes as part of a B.Tech semester project.
+
+---
+
+<p align="center">
+
+**🏥 MedQueue – Making Hospital Queues Smarter!**
+
+*Designed and developed as an academic project.*
+
+</p>
